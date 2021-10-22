@@ -11,8 +11,12 @@ export default function Home() {
     var channel = pusher.subscribe("my-channel");
 
     channel.bind("my-event", (data) => {
-      playSound();
       console.log("Play sound");
+    });
+
+    channel.bind("play-url", (data) => {
+      new Audio( data.url).play()
+      console.log("Play url:",data);
     });
   }, []);
 
@@ -27,12 +31,29 @@ export default function Home() {
       <button
         type="button"
         onClick={async () => {
-          const res = await fetch("/api/hello");
+          const res = await fetch("/api/play-url",  {
+            method: 'POST', 
+            body: JSON.stringify({url:"/mp3/Awkward-Cricket.mp3"})
+          });
           const json = await res.json();
           console.log(json);
         }}
       >
-        Make Sound
+        Awkward-Cricket
+      </button>
+
+      <button
+        type="button"
+        onClick={async () => {
+          const res = await fetch("/api/play-url",  {
+            method: 'POST', 
+            body: JSON.stringify({url:"/mp3/ill-be-back.mp3"})
+          });
+          const json = await res.json();
+          console.log(json);
+        }}
+      >
+        ill-be-back
       </button>
     </div>
   );
