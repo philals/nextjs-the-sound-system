@@ -10,3 +10,7 @@ export async function getMP3FileList() {
 
   return files;
 }
+
+export async function fetchFilesFromGitHub() {
+    return await getMP3FileList()
+  }

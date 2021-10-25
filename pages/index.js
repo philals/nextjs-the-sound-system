@@ -2,14 +2,21 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Pusher from "pusher-js";
-import {getMP3FileList} from '../functions/fileList'
+import { getMP3FileList, fetchFilesFromGitHub } from "../functions/fileList";
+import { useQuery } from "react-query";
 
 export default function Home() {
   const [volume, setVolume] = useState(0.5);
 
-  console.log("volume: ", volume);
+  const { isLoading, isError, data, error } = useQuery(
+    "filesFromGitHub",
+    fetchFilesFromGitHub
+  );
+
+  console.log("isLoading: ", isLoading);
+  console.log("data: ", data);
+
   useEffect(() => {
-    getMP3FileList()
     var pusher = new Pusher("e8fb826764d9c03dee0b", {
       cluster: "ap4",
     });
@@ -26,6 +33,14 @@ export default function Home() {
       console.log("Play url:", data);
     });
   }, []);
+
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
 
   return (
     <div className={styles.container}>
@@ -50,27 +65,33 @@ export default function Home() {
         max="1"
       />
 
-      <PlayButton name={"Awkward cricket"} path={"/mp3/Awkward-Cricket.mp3"} />
-      <PlayButton name={"I'll be back"} path={"/mp3/ill-be-back.mp3"} />
-      <PlayButton name={"MLG Horn"} path={"/mp3/mlg-air-horn.mp3"} />
-
-     </div>
+      {data.map((file, i) => {
+        return (
+          <PlayButton
+            key={i}
+            name={file.replace("/mp3/", "").replace(".mp3", "")}
+            path={file}
+          />
+        );
+      })}
+    </div>
   );
 }
 
-const PlayButton = ({name, path}) => {
+const PlayButton = ({ name, path }) => {
   return (
     <button
-    type="button"
-    onClick={async () => {
-      const res = await fetch("/api/play-url", {
-        method: "POST",
-        body: JSON.stringify({ url: path }),
-      });
-      const json = await res.json();
-      console.log(json);
-    }}
-  >
-    {name}
-  </button> )
-}
+      type="button"
+      onClick={async () => {
+        const res = await fetch("/api/play-url", {
+          method: "POST",
+          body: JSON.stringify({ url: path }),
+        });
+        const json = await res.json();
+        console.log(json);
+      }}
+    >
+      {name}
+    </button>
+  );
+};
