@@ -9,13 +9,10 @@ export default async function handler(req, res) {
     cluster: "ap4"
   });
 
-console.log("req.body:",JSON.parse(req.body).url)
 
   const playUrlResult = await pusherPush.trigger("my-channel", "play-url", {
     url: JSON.parse(req.body).url
   });
 
-  console.log("playUrlResult: ", playUrlResult);
-  console.log("ressult: ", result);
   res.status(200).json(result);
 }

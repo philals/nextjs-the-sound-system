@@ -1,12 +1,15 @@
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Pusher from "pusher-js";
 
 export default function Home() {
+  const [volume, setVolume] = useState(0.5);
+
+  console.log("volume: ", volume);
   useEffect(() => {
     var pusher = new Pusher("e8fb826764d9c03dee0b", {
-      cluster: "ap4"
+      cluster: "ap4",
     });
     var channel = pusher.subscribe("my-channel");
 
@@ -15,8 +18,10 @@ export default function Home() {
     });
 
     channel.bind("play-url", (data) => {
-      new Audio( data.url).play()
-      console.log("Play url:",data);
+      const audio = new Audio(data.url);
+      audio.volume = parseFloat(volume);
+      audio.play();
+      console.log("Play url:", data);
     });
   }, []);
 
@@ -28,12 +33,27 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <label htmlFor="volume">Volume</label>
+      <input
+        step="0.1"
+        type="range"
+        value={volume}
+        onChange={(e) => {
+          console.log(e);
+          setVolume(e.target.value);
+        }}
+        id="volume"
+        name="volume"
+        min="0"
+        max="1"
+      />
+
       <button
         type="button"
         onClick={async () => {
-          const res = await fetch("/api/play-url",  {
-            method: 'POST', 
-            body: JSON.stringify({url:"/mp3/Awkward-Cricket.mp3"})
+          const res = await fetch("/api/play-url", {
+            method: "POST",
+            body: JSON.stringify({ url: "/mp3/Awkward-Cricket.mp3" }),
           });
           const json = await res.json();
           console.log(json);
@@ -45,9 +65,9 @@ export default function Home() {
       <button
         type="button"
         onClick={async () => {
-          const res = await fetch("/api/play-url",  {
-            method: 'POST', 
-            body: JSON.stringify({url:"/mp3/ill-be-back.mp3"})
+          const res = await fetch("/api/play-url", {
+            method: "POST",
+            body: JSON.stringify({ url: "/mp3/ill-be-back.mp3" }),
           });
           const json = await res.json();
           console.log(json);
