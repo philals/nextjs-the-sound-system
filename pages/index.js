@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Pusher from "pusher-js";
-import { getMP3FileList, fetchFiles } from "../functions/fileList";
+import { getMP3FileList, fetchFilesFromGitHub } from "../functions/fileList";
 import { useQuery } from "react-query";
 
 export default function Home() {
@@ -10,7 +10,7 @@ export default function Home() {
 
   const { isLoading, isError, data, error } = useQuery(
     "filesFromGitHub",
-    fetchFiles
+    fetchFilesFromGitHub
   );
 
   console.log("isLoading: ", isLoading);
