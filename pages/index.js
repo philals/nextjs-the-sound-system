@@ -2,12 +2,14 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Pusher from "pusher-js";
+import {getMP3FileList} from '../functions/fileList'
 
 export default function Home() {
   const [volume, setVolume] = useState(0.5);
 
   console.log("volume: ", volume);
   useEffect(() => {
+    getMP3FileList()
     var pusher = new Pusher("e8fb826764d9c03dee0b", {
       cluster: "ap4",
     });
