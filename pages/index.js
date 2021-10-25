@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Pusher from "pusher-js";
-import { getMP3FileList, fetchFilesFromGitHub } from "../functions/fileList";
+import { fetchFilesFromGitHub } from "../functions/fileList";
 import { useQuery } from "react-query";
 
 export default function Home() {
@@ -13,24 +13,16 @@ export default function Home() {
     fetchFilesFromGitHub
   );
 
-  console.log("isLoading: ", isLoading);
-  console.log("data: ", data);
-
   useEffect(() => {
     var pusher = new Pusher("e8fb826764d9c03dee0b", {
       cluster: "ap4",
     });
     var channel = pusher.subscribe("my-channel");
 
-    channel.bind("my-event", (data) => {
-      console.log("Play sound");
-    });
-
     channel.bind("play-url", (data) => {
       const audio = new Audio(data.url);
       audio.volume = parseFloat(volume);
       audio.play();
-      console.log("Play url:", data);
     });
   }, []);
 
@@ -83,12 +75,10 @@ const PlayButton = ({ name, path }) => {
     <button
       type="button"
       onClick={async () => {
-        const res = await fetch("/api/play-url", {
+        await fetch("/api/play-url", {
           method: "POST",
           body: JSON.stringify({ url: path }),
         });
-        const json = await res.json();
-        console.log(json);
       }}
     >
       {name}
