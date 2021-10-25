@@ -48,35 +48,31 @@ export default function Home() {
         max="1"
       />
 
-      <button
-        type="button"
-        onClick={async () => {
-          const res = await fetch("/api/play-url", {
-            method: "POST",
-            body: JSON.stringify({ url: "/mp3/Awkward-Cricket.mp3" }),
-          });
-          const json = await res.json();
-          console.log(json);
-        }}
-      >
-        Awkward-Cricket
-      </button>
+      <playButton name={"Awkward cricket"} path={"/mp3/Awkward-Cricket.mp3"} />
+      <playButton name={"I'll be back"} path={"/mp3/ill-be-back.mp3"} />
+      <playButton name={"MLG Horn"} path={"/mp3/mlg-air-horn.mp3"} />
 
-      <button
-        type="button"
-        onClick={async () => {
-          const res = await fetch("/api/play-url", {
-            method: "POST",
-            body: JSON.stringify({ url: "/mp3/ill-be-back.mp3" }),
-          });
-          const json = await res.json();
-          console.log(json);
-        }}
-      >
-        ill-be-back
-      </button>
-    </div>
+
+     </div>
   );
+}
+
+const playButton = (name, path) => {
+  return (
+    <button
+    type="button"
+    onClick={async () => {
+      const res = await fetch("/api/play-url", {
+        method: "POST",
+        body: JSON.stringify({ url: path }),
+      });
+      const json = await res.json();
+      console.log(json);
+    }}
+  >
+    {name}
+  </button>
+  )
 }
 
 function playSound() {
