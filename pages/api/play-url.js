@@ -11,7 +11,8 @@ export default async function handler(req, res) {
 
 
   const playUrlResult = await pusherPush.trigger("my-channel", "play-url", {
-    url: JSON.parse(req.body).url
+    url: JSON.parse(req.body).url,
+    username: JSON.parse(req.body).username,
   });
 
   res.status(200).json(playUrlResult);
