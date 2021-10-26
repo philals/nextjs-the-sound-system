@@ -5,10 +5,8 @@ import Pusher from "pusher-js";
 import { fetchFilesFromGitHub } from "../functions/fileList";
 import { useQuery } from "react-query";
 
-export default function Home() {
+export default function Home(props) {
   const [volume, setVolume] = useState(0.5);
-  const [username, setUsername] = useState(null)
-  const usernameEntry = useRef(null)
   const playLogRef = useRef(null)
 
   const { isLoading, isError, data, error, isFetching } = useQuery(
@@ -42,26 +40,6 @@ export default function Home() {
     }
   }, [volume]);
 
-  if (!username) {
-    return (
-      <>
-        <p>Enter a username</p>
-        <form>
-
-        <input ref={usernameEntry} type="text"></input>
-        <button type="submit" onClick={() => {
-          if (usernameEntry.current.value.length === 0) {
-            alert("enter something plz")
-            return
-          }
-
-          setUsername(usernameEntry.current.value)
-        }
-        }>Go</button>
-        </form>
-      </>
-    )
-  }
 
 
   return (
@@ -96,7 +74,7 @@ export default function Home() {
             key={i}
             name={name}
             path={file}
-            username={username}
+            username={props.username}
           />
             );
           })
