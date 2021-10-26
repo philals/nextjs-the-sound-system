@@ -84,7 +84,7 @@ export default function Home(props) {
       {isFetching ? <span>Refreshing...</span> : null}
       {isLoading && <span>Loading...</span>}
 
-      <div ref={playLogRef}></div>
+      <div className="playlog" ref={playLogRef}></div>
 
     </div>
   );
