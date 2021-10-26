@@ -29,10 +29,16 @@ function MyApp({ Component, pageProps }) {
                 <input
                   type="checkbox"
                   onChange={(e) => {
+                    console.log("selectedChannels", selectedChannels);
                     if (selectedChannels.includes(e.target.value)) {
-                      setSelectedChanngels([]);
+                      const newArray = selectedChannels.filter(
+                        (c) => c !== e.target.value
+                      );
+                      setSelectedChanngels(newArray);
                     } else {
-                      setSelectedChanngels([e.target.value]);
+                      const newArray =[...selectedChannels] 
+                      newArray.push(e.target.value);
+                      setSelectedChanngels(newArray);
                     }
                   }}
                   checked={selectedChannels.includes(channel)}
@@ -50,7 +56,11 @@ function MyApp({ Component, pageProps }) {
             onClick={(e) => {
               e.preventDefault();
               if (username.length === 0) {
-                alert("enter something plz");
+                alert("enter a name plz");
+                return;
+              }
+              if (selectedChannels.length === 0) {
+                alert("enter choose a channel");
                 return;
               }
               setReady(true);
