@@ -38,6 +38,7 @@ export default function Home() {
 
     return ()=>{
       channel.unbind()
+      pusher.disconnect()
     }
   }, [volume]);
 
