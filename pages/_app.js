@@ -1,15 +1,21 @@
 import "../styles/globals.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { useState } from "react";
+import GitHubForkRibbon from "react-github-fork-ribbon";
 
 const queryClient = new QueryClient();
-export const channelsForRent = ["global", "TV1", "Trackside", "Sky-1", "Fox-News"]; // some conventions: https://pusher.com/docs/channels/using_channels/channels/#channel-naming-conventions
+export const channelsForRent = [
+  "global",
+  "TV1",
+  "Trackside",
+  "Sky-1",
+  "Fox-News",
+]; // some conventions: https://pusher.com/docs/channels/using_channels/channels/#channel-naming-conventions
 
 function MyApp({ Component, pageProps }) {
   const [username, setUsername] = useState("");
   const [selectedChannels, setSelectedChanngels] = useState(["global"]);
   const [ready, setReady] = useState(false);
-
 
   if (!ready) {
     return (
@@ -36,7 +42,7 @@ function MyApp({ Component, pageProps }) {
                       );
                       setSelectedChanngels(newArray);
                     } else {
-                      const newArray =[...selectedChannels] 
+                      const newArray = [...selectedChannels];
                       newArray.push(e.target.value);
                       setSelectedChanngels(newArray);
                     }
@@ -75,6 +81,12 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <GitHubForkRibbon
+        href="https://github.com/philals/nextjs-the-sound-system/tree/main/public/mp3"
+        target="_blank"
+        position="right"
+      >
+        Github</GitHubForkRibbon>
       <Component
         {...pageProps}
         username={username}
