@@ -35,7 +35,11 @@ export default function Home() {
       audio.play();
       appendLog(data);
     });
-  }, []);
+
+    return ()=>{
+      channel.unbind()
+    }
+  }, [volume]);
 
   if (!username) {
     return (
