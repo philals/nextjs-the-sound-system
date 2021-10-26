@@ -89,10 +89,11 @@ export default function Home() {
       
       {!isLoading && <div className="soundboard">
        {data.map((file, i) => {
+         const name = file.replace("/mp3/", "").replace(".mp3", "").replace(/-/g, " ")
         return (
           <PlayButton
             key={i}
-            name={file.replace("/mp3/", "").replace(".mp3", "").replace(/-/g, " ")}
+            name={name}
             path={file}
             username={username}
           />
