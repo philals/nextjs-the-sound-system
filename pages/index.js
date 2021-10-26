@@ -7,7 +7,7 @@ import { useQuery } from "react-query";
 
 export default function Home(props) {
   const [volume, setVolume] = useState(0.5);
-  const playLogRef = useRef(null)
+  const playLogRef = useRef(null);
 
   const { isLoading, isError, data, error, isFetching } = useQuery(
     "filesFromGitHub",
@@ -16,13 +16,13 @@ export default function Home(props) {
 
   function appendLog(e) {
     const updatedLog = `user: ${e.username} played: ${e.url} \n`;
-    const newElement = document.createElement("p")
-    newElement.innerHTML = updatedLog
+    const newElement = document.createElement("p");
+    newElement.innerHTML = updatedLog;
     playLogRef.current.prepend(newElement);
   }
 
   useEffect(() => {
-    var pusher = new Pusher("e8fb826764d9c03dee0b", {
+    var pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
       cluster: "ap4",
     });
     var channel = pusher.subscribe("my-channel");
@@ -34,10 +34,10 @@ export default function Home(props) {
       appendLog(data);
     });
 
-    return ()=>{
-      channel.unbind()
-      pusher.disconnect()
-    }
+    return () => {
+      channel.unbind();
+      pusher.disconnect();
+    };
   }, [volume]);
 
   return (
@@ -63,27 +63,30 @@ export default function Home(props) {
         max="1"
       />
       {isError && <span>Error: {error.message}</span>}
-      
-      {!isLoading && <div className="soundboard">
-       {data.map((file, i) => {
-         const name = file.replace("/mp3/", "").replace(".mp3", "").replace(/-/g, " ")
-        return (
-          <PlayButton
-            key={i}
-            name={name}
-            path={file}
-            username={props.username}
-          />
+
+      {!isLoading && (
+        <div className="soundboard">
+          {data.map((file, i) => {
+            const name = file
+              .replace("/mp3/", "")
+              .replace(".mp3", "")
+              .replace(/-/g, " ");
+            return (
+              <PlayButton
+                key={i}
+                name={name}
+                path={file}
+                username={props.username}
+              />
             );
-          })
-        }
-      </div>}
+          })}
+        </div>
+      )}
 
       {isFetching ? <span>Refreshing...</span> : null}
       {isLoading && <span>Loading...</span>}
 
       <div className="playlog" ref={playLogRef}></div>
-
     </div>
   );
 }
@@ -94,7 +97,7 @@ const PlayButton = ({ name, path, username }) => {
       method: "POST",
       body: JSON.stringify({ url: path, username }),
     });
-  }
+  };
   return (
     <button className="soundboard--button" onClick={onClick}>
       {name}
