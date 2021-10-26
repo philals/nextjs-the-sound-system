@@ -8,7 +8,7 @@ import { useQuery } from "react-query";
 export default function Home() {
   const [volume, setVolume] = useState(0.5);
 
-  const { isLoading, isError, data, error } = useQuery(
+  const { isLoading, isError, data, error, isFetching } = useQuery(
     "filesFromGitHub",
     fetchFilesFromGitHub
   );
@@ -26,13 +26,6 @@ export default function Home() {
     });
   }, []);
 
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    return <span>Error: {error.message}</span>;
-  }
 
   return (
     <div className={styles.container}>
@@ -56,32 +49,34 @@ export default function Home() {
         min="0"
         max="1"
       />
-      <div className="soundboard">
-      {data.map((file, i) => {
+      {isError && <span>Error: {error.message}</span>}
+      {!isLoading && <div className="soundboard">
+       {data.map((file, i) => {
         return (
-          <PlayButton
-            key={i}
-            name={file.replace("/mp3/", "").replace(".mp3", "").replace("-", " ")}
-            path={file}
-          />
-        );
-      })}
-      </div>
+            <PlayButton
+              key={i}
+              name={file.replace("/mp3/", "").replace(".mp3", "").replace(/-/g, " ")}
+              path={file}
+            />
+            );
+          })
+        }
+      </div>}
+      {isFetching ? <span>Refreshing...</span> : null}
+      {isLoading && <span>Loading...</span>}
     </div>
   );
 }
 
 const PlayButton = ({ name, path }) => {
+  const onClick = async () => {
+    await fetch("/api/play-url", {
+      method: "POST",
+      body: JSON.stringify({ url: path }),
+    });
+  }
   return (
-    <button
-      type="button"
-      onClick={async () => {
-        await fetch("/api/play-url", {
-          method: "POST",
-          body: JSON.stringify({ url: path }),
-        });
-      }}
-    >
+    <button className="soundboard--button" onClick={onClick}>
       {name}
     </button>
   );
