@@ -26,3 +26,8 @@ a {
 .soundboard--button {
   height: 60px;
 }
+
+.playlog {
+  height: 200px;
+  overflow-y: auto;
+}
