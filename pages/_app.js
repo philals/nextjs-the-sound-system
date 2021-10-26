@@ -3,13 +3,13 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { useState } from "react";
 
 const queryClient = new QueryClient();
+export const channelsForRent = ["global", "TV1", "Trackside", "Sky-1", "Fox-News"]; // some conventions: https://pusher.com/docs/channels/using_channels/channels/#channel-naming-conventions
 
 function MyApp({ Component, pageProps }) {
   const [username, setUsername] = useState("");
   const [selectedChannels, setSelectedChanngels] = useState(["global"]);
   const [ready, setReady] = useState(false);
 
-  const channelsForRent = ["global", "TV1", "Trackside", "Sky 1", "Fox News"];
 
   if (!ready) {
     return (
