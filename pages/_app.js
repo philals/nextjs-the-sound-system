@@ -6,16 +6,23 @@ const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }) {
   const [username, setUsername] = useState("");
+  const [room, setRoom] = useState("global");
   const [ready, setReady] = useState(false);
-
+  
   if (!ready) {
     return (
       <>
-        <p>Enter a username</p>
         <form>
+        <p>Enter a username</p>
           <input
             onChange={(e) => setUsername(e.target.value)}
             value={username}
+            type="text"
+          />
+        <p>Enter a room</p>
+          <input
+            onChange={(e) => setRoom(e.target.value)}
+            value={room}
             type="text"
           />
           <button
@@ -37,8 +44,8 @@ function MyApp({ Component, pageProps }) {
   }
 
   return (
-    <QueryClientProvider client={queryClient} username={username}>
-      <Component {...pageProps} />
+    <QueryClientProvider client={queryClient} >
+      <Component {...pageProps} username={username} room={room}/>
     </QueryClientProvider>
   );
 }

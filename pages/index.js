@@ -40,8 +40,6 @@ export default function Home(props) {
     }
   }, [volume]);
 
-
-
   return (
     <div className={styles.container}>
       <Head>
