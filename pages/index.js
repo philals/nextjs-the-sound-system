@@ -45,8 +45,10 @@ export default function Home() {
     return (
       <>
         <p>Enter a username</p>
+        <form>
+
         <input ref={usernameEntry} type="text"></input>
-        <button onClick={() => {
+        <button type="submit" onClick={() => {
           if (usernameEntry.current.value.length === 0) {
             alert("enter something plz")
             return
@@ -55,6 +57,7 @@ export default function Home() {
           setUsername(usernameEntry.current.value)
         }
         }>Go</button>
+        </form>
       </>
     )
   }
