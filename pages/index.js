@@ -85,12 +85,12 @@ export default function Home() {
         min="0"
         max="1"
       />
-
+      <div className="soundboard">
       {data.map((file, i) => {
         return (
           <PlayButton
             key={i}
-            name={file.replace("/mp3/", "").replace(".mp3", "")}
+            name={file.replace("/mp3/", "").replace(".mp3", "").replace("-", " ")}
             path={file}
             username={username}
           />
@@ -99,6 +99,7 @@ export default function Home() {
 
       <div ref={playLogRef}></div>
 
+      </div>
     </div>
   );
 }
