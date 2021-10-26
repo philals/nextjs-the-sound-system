@@ -6,25 +6,45 @@ const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }) {
   const [username, setUsername] = useState("");
-  const [room, setRoom] = useState("global");
+  const [selectedChannels, setSelectedChanngels] = useState(["global"]);
   const [ready, setReady] = useState(false);
-  
+
+  const channelsForRent = ["global", "TV1", "Trackside", "Sky 1", "Fox News"];
+
   if (!ready) {
     return (
       <>
         <form>
-        <p>Enter a username</p>
+          <p>Enter a username</p>
           <input
             onChange={(e) => setUsername(e.target.value)}
             value={username}
             type="text"
           />
-        <p>Enter a room</p>
-          <input
-            onChange={(e) => setRoom(e.target.value)}
-            value={room}
-            type="text"
-          />
+          <p>Select Channels:</p>
+
+          {channelsForRent.map((channel, i) => {
+            return (
+              <div key={i}>
+                <input
+                  type="checkbox"
+                  onChange={(e) => {
+                    if (selectedChannels.includes(e.target.value)) {
+                      setSelectedChanngels([]);
+                    } else {
+                      setSelectedChanngels([e.target.value]);
+                    }
+                  }}
+                  checked={selectedChannels.includes(channel)}
+                  id={channel}
+                  name={channel}
+                  value={channel}
+                />
+                <label htmlFor={channel}>{channel}</label>
+              </div>
+            );
+          })}
+
           <button
             type="submit"
             onClick={(e) => {
@@ -44,8 +64,12 @@ function MyApp({ Component, pageProps }) {
   }
 
   return (
-    <QueryClientProvider client={queryClient} >
-      <Component {...pageProps} username={username} room={room}/>
+    <QueryClientProvider client={queryClient}>
+      <Component
+        {...pageProps}
+        username={username}
+        channels={selectedChannels}
+      />
     </QueryClientProvider>
   );
 }
