@@ -83,12 +83,13 @@ export default function Home() {
         max="1"
       />
       {isError && <span>Error: {error.message}</span>}
+      
       {!isLoading && <div className="soundboard">
        {data.map((file, i) => {
         return (
           <PlayButton
             key={i}
-            name={file.replace("/mp3/", "").replace(".mp3", "").replace("-", " ")}
+            name={file.replace("/mp3/", "").replace(".mp3", "").replace(/-/g, " ")}
             path={file}
             username={username}
           />
