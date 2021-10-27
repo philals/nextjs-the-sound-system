@@ -84,7 +84,7 @@ export default function Home(props) {
       />
       {isError && <span>Error: {error.message}</span>}
       {!isLoading && (
-        <div className="soundboard">
+        <div className={styles.soundboard}>
           {data.map((file, i) => {
             const name = file
               .replace("/mp3/", "")
@@ -92,6 +92,7 @@ export default function Home(props) {
               .replace(/-/g, " ");
             return (
               <PlayButton
+                className={styles['soundboard-button']}
                 key={i}
                 name={name}
                 path={file}
@@ -104,12 +105,12 @@ export default function Home(props) {
       )}
       {isFetching ? <span>Refreshing...</span> : null}
       {isLoading && <span>Loading...</span>}
-      <div className="playlog" ref={playLogRef}></div>
+      <div className={styles.playlog} ref={playLogRef}></div>
     </div>
   );
 }
 
-const PlayButton = ({ name, path, username, channels }) => {
+const PlayButton = ({ name, path, username, channels, ...rest }) => {
   const onClick = async () => {
     await fetch("/api/play-url", {
       method: "POST",
@@ -117,7 +118,7 @@ const PlayButton = ({ name, path, username, channels }) => {
     });
   };
   return (
-    <button className="soundboard--button" onClick={onClick}>
+    <button {...rest} onClick={onClick}>
       {name}
     </button>
   );

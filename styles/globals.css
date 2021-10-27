@@ -14,20 +14,3 @@ a {
 * {
   box-sizing: border-box;
 }
-
-.soundboard {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  align-content: space-evenly;
-  grid-gap: .5em;
-  justify-content: start;
-}
-
-.soundboard--button {
-  height: 60px;
-}
-
-.playlog {
-  height: 200px;
-  overflow-y: auto;
-}
