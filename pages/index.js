@@ -87,6 +87,7 @@ export default function Home(props) {
         <div className={styles.soundboard}>
           {data.map((file, i) => {
             const name = file
+              .toLowerCase()
               .replace("/mp3/", "")
               .replace(".mp3", "")
               .replace(/-/g, " ");
